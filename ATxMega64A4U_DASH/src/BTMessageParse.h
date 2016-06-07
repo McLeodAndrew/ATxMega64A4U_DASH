@@ -37,9 +37,10 @@ char rxBufferFull;
 uint8_t bytes_rx;
 uint8_t commands_in_buf;
 
-/* THIS IS BAD! THIS STUFF DOESN'T BELONG HERE */
-/*These variables really shouldn't be declared here but I need access to them in parseCommand. I need to shift around
-some stuff so that these variables are only modified in main.c	*/
+/* THIS IS BAD PRACTICE! THIS STUFF DOESN'T BELONG HERE */
+/*These variables really shouldn't be declared here but I need access to them in parseCommand. The better practice would be to set flags
+for the variables that we want to change. Then the variables that are declared below are only declared/modified in main.c 
+A implementation similar to the sendPositionFlag should be used.	*/
 
 enum states{
 	Speed,
@@ -52,9 +53,9 @@ uint8_t mlDutyCycle;
 uint8_t mlDestination;
 uint8_t mrDestination;
 
-bool sendPositionFlag;
+/* THIS IS BAD PRACTICE! THIS STUFF DOESN'T BELONG HERE */
 
-/* THIS IS BAD! THIS STUFF DOESN'T BELONG HERE */
+bool sendPositionFlag;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* FUNCTION PROTOTYPES */

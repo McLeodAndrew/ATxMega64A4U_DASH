@@ -43,7 +43,7 @@ struct GLOBAL_FLAGS {
 
 //TIME_INTERVAL = (desired interval[sec] )*( frequency[Hz]) / 255
 #define TIME_INTERVAL 100
-#define POS_TOLERANCE 3	//5% of 192 positions is 9.6
+#define POS_TOLERANCE 3	//192 total positions
 #define POS_SPEED	50
 #define leftCurrentPos TCC0_CNT
 #define rightCurrentPos TCD0_CNT
@@ -263,7 +263,7 @@ static void qdec_init(void)
 	
 	qdec_get_config_defaults(&QDEC_CH1);
 	qdec_config_phase_pins(&QDEC_CH1, &PORTB, 0, false, 50);
-	qdec_config_revolution(&QDEC_CH1, (12*16));
+	qdec_config_revolution(&QDEC_CH1, (12*16));	//12 counts per revolution of magnetic encoder wheel. 16:1 Gear ratio between encoder and legs.
 	//qdec_config_event_channel(&QDEC_CH1, 0);
 	//qdec_config_tc(&QDEC_CH1, &TCC0);
 	
@@ -273,7 +273,7 @@ static void qdec_init(void)
 	
 	qdec_get_config_defaults(&QDEC_CH2);
 	qdec_config_phase_pins(&QDEC_CH2, &PORTC, 0, false, 50);
-	qdec_config_revolution(&QDEC_CH2, (12*16));
+	qdec_config_revolution(&QDEC_CH2, (12*16)); //12 counts per revolution of magnetic encoder wheel. 16:1 Gear ratio between encoder and legs.
 	qdec_config_event_channel(&QDEC_CH2, 2);
 	qdec_config_tc(&QDEC_CH2, &TCD0);
 	
@@ -313,7 +313,12 @@ void sendACK(void)
 	usart_putchar(&USARTD0, 'K');
 	bytes_rx = 0;
 }
+#endif /* USART_to_BT */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* This function can be used to debounce the but*/
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int8_t debounce_switch(uint8_t button) {
 	static uint16_t state = 0;
 	state = (state <<1) | (! gpio_pin_is_low(button)) | 0xE000 ;
@@ -322,8 +327,6 @@ int8_t debounce_switch(uint8_t button) {
 	}
 	return 0;
 }
-#endif /* USART_to_BT */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 												/* ISRs */

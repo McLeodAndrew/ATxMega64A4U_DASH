@@ -55,11 +55,11 @@ int buf_get(char *pc)
 void buf_clear(void)
 {
 	memset(&buf[0], 0, BUFSIZE);
-	pIn = pOut = buf;       // init to any slot in buffer
-	rxBufferFull = 0;       // buffer is empty
-	bytes_rx = 0;
-	commands_in_buf = 0;
-}
+	pIn = pOut = buf;       // reset buffer pointers
+	rxBufferFull = 0;       // set buffer full flag to 0
+	bytes_rx = 0;			// Empty everything
+	commands_in_buf = 0;	// Empty everything
+	}
 
 void parseCommand(void)
 {
